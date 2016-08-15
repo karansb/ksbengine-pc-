@@ -173,9 +173,9 @@ int main(){
 	const int width = 640;
 	const int height = 480;
 	windowmaker thewindow("trial",width,height);
-	objfileloader theobj2("C:\\Users\\karan\\Desktop\\cubetriangulate.obj");
-	objfileloader theobj3("C:\\Users\\karan\\Desktop\\newbunnytriangulate.obj");
-	objfileloader theobj("C:\\Users\\karan\\Desktop\\conetriangulate.obj");
+	objfileloader theobj2("..\\3d objects obj\\cubetriangulate.obj");
+	objfileloader theobj3("..\\3d objects obj\\newbunnytriangulate.obj");
+	objfileloader theobj("..\\3d objects obj\\conetriangulate.obj");
 	
 	/*GLuint vertexbuffer;
 	glGenBuffers(1,&vertexbuffer);
