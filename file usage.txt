@@ -1,0 +1,9 @@
+to load 3d models:
+1. load it in maya
+2. export as .obj from maya (make sure that triangulate faces is ticked)
+3. put exported .obj in 3d objects obj folder
+4. load it using the obj loader class 
+5. render it in main game loop
+
+note: after pulling from github, the first three steps has to be done for each object
+(although it is already in the folder)
