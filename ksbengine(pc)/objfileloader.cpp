@@ -6,113 +6,96 @@ namespace ksbengine{namespace coreengine{
 		float beforetime = glfwGetTime();
 		inthefile = thefile.readfile();
 		std::cout << "file read in " << glfwGetTime() - beforetime << " s" << std::endl;
-		int i = 0;
-		int printcounter;
-		for (i = 0; inthefile[i] != '\0'; i++){
-			if (inthefile[i] == 'v'&&inthefile[i + 1] != ' '){
-				break;
-			}
-			if (inthefile[i] == 'v'&&inthefile[i + 1] == ' '){
-				char thenum[20];
-				int countnum = 0;
-				int j = 0;
-				for (j = i + 1; inthefile[j] != 'v'; j++){
-					if (inthefile[j] == ' '){
-						if (countnum != 0){
-							thenum[countnum] = '\0';
-							verticesdata.push_back((GLfloat)std::stof(thenum));
-						}
-						countnum = 0;
-						continue;
-					}
-					else{
-						thenum[countnum] = inthefile[j];
-						countnum++;
-					}
-				}
-				thenum[countnum] = '\0';
-				verticesdata.push_back(std::stof(thenum));
-				i = j-1;
-			}
-		}
 		
-		//filled vertex array
-		for (i; inthefile[i] != '\0'; i++){
-			if (inthefile[i] == 'v'&&inthefile[i + 1] != 't'){
-				break;
-			}
-			if (inthefile[i] == 'v'&&inthefile[i + 1] == 't'&&inthefile[i + 2] == ' '){
+		for (int i = 0; inthefile[i] != '\0';i++){
+			//check for texcoords line
+			if (inthefile[i]=='\n'&&inthefile[i+1]=='v'&&inthefile[i+2]=='t'){
+				int numcount=0;
 				char thenum[20];
-				int thecount = 0;
 				int j = 0;
-				for (j = i + 2; inthefile[j] != 'v'; j++){
-					if (inthefile[j] == ' '){
-						if (thecount != 0){
-							thenum[thecount] = '\0';
+				for (j = i + 3; inthefile[j] != '\n';j++){
+					if (inthefile[j]==' '){
+						if (numcount!=0){
+							thenum[numcount] = '\0';
 							texcoordsdata.push_back(std::stof(thenum));
+							numcount = 0;
 						}
-						thecount = 0;
-						continue;
 					}
 					else{
-						thenum[thecount] = inthefile[j];
-						thecount++;
+						thenum[numcount] = inthefile[j];
+						numcount++;
 					}
 				}
-				thenum[thecount] = '\0';
+				thenum[numcount] = '\0';
 				texcoordsdata.push_back(std::stof(thenum));
-				i = j-1;
+				numcount = 0;
+				i = j - 1;
 			}
-		}
-		
-		//texcoords array filled
-		for (i; inthefile[i] != '\0'; i++){
-			if (inthefile[i] == 's'){
-				break;
-			}
-			if (inthefile[i] == 'v'&&inthefile[i + 1] == 'n'&&inthefile[i + 2] == ' '){
-				int thecount = 0;
-				char thenum[20];
+			//end of texcoords line
+			//check normals line
+			else if (inthefile[i]=='\n'&&inthefile[i+1]=='v'&&inthefile[i+2]=='n'){
 				int j = 0;
-				for (j = i + 2; inthefile[j] != 'v' && inthefile[j] != 's'; j++){
-					if (inthefile[j] == ' '){
-						if (thecount != 0){
-							thenum[thecount] = '\0';
+				int numcount=0;
+				char thenum[20];
+				for (j = i + 3; inthefile[j] != '\n'; j++){
+					if (inthefile[j]==' '){
+						if (numcount!=0){
+							thenum[numcount] = 0;
 							normalsdata.push_back(std::stof(thenum));
+							numcount = 0;
 						}
-						thecount = 0;
-						continue;
 					}
 					else{
-						thenum[thecount] = inthefile[j];
-						thecount++;
+						thenum[numcount] = inthefile[j];
+						numcount++;
 					}
 				}
-				thenum[thecount] = '\0';
+				thenum[numcount] = 0;
 				normalsdata.push_back(std::stof(thenum));
-				i = j-1;
+				numcount = 0;
+				i = j - 1;
 			}
-		}
-		
-		//normals array filled
-		for (i; inthefile[i] != '\0'; i++){
-			if (inthefile[i] == 'f'&&inthefile[i + 1] == ' '){
-				char thenum[20];
-				int numcount = 0;
+			//end of normals line
+			//start of vertices line
+			else if (inthefile[i]=='\n'&&inthefile[i+1]=='v'){
 				int j = 0;
-				for (j = i + 1; inthefile[j] != 'f' && inthefile[j] != '\0'&&inthefile[j]!='s'; j++){
-					if (inthefile[j] == ' ' || inthefile[j] == '/'){
-						//special check for no texcoord
-						if (inthefile[j]=='/'&&inthefile[j-1]=='/'){
-							vertexdataindex.push_back(0);
+				int numcount = 0;
+				char thenum[20];
+				for (j = i + 2; inthefile[j] != '\n';j++){
+					if (inthefile[j]==' '){
+						if (numcount!=0){
+							thenum[numcount] = '\0';
+							verticesdata.push_back(std::stof(thenum));
+							numcount = 0;
 						}
-						//end of special check
-						if (numcount != 0){
+					}
+					else{
+						thenum[numcount] = inthefile[j];
+						numcount++;
+					}
+				}
+				thenum[numcount] = '\0';
+				verticesdata.push_back(std::stof(thenum));
+				numcount = 0;
+				i = j - 1;
+			}
+			//end of vertices line
+			//check vertexdataindex line
+			else if(inthefile[i]=='\n'&&inthefile[i+1]=='f'){
+				int j = 0;
+				int numcount = 0;
+				char thenum[20];
+				for (j = i + 2; inthefile[j] != '\n';j++){
+					if (inthefile[j]==' '||inthefile[j]=='/'){
+						if (inthefile[j-1]=='/'){
+							vertexdataindex.push_back(0);
+							numcount = 0;
+						}
+						else if (numcount!=0){
 							thenum[numcount] = '\0';
 							vertexdataindex.push_back(std::stof(thenum));
+							numcount = 0;
 						}
-						numcount = 0;
-						continue;
 					}
 					else{
 						thenum[numcount] = inthefile[j];
@@ -121,9 +104,13 @@ namespace ksbengine{namespace coreengine{
 				}
 				thenum[numcount] = '\0';
 				vertexdataindex.push_back(std::stof(thenum));
-				i = j-1;
+				numcount = 0;
+				i = j - 1;
 			}
+			//end of vertexdataindex line
 		}
+
+
 		std::cout << normalsdata.size() / 3 << " normals" << std::endl;
 		std::cout << verticesdata.size()/3  << " vertices" << std::endl;
 
