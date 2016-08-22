@@ -1,10 +1,8 @@
-﻿Build started 8/16/2016 10:14:10 AM.
+﻿Build started 8/22/2016 4:48:57 AM.
      1>Project "C:\Users\karan\Desktop\gitpulltrial\ksbengine(pc)\ksbengine(pc).vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IC:\Users\karan\Desktop\gitpulltrial\/dependencies/include /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
-         main.cpp
-     1>c:\users\karan\desktop\gitpulltrial\ksbengine(pc)\main.cpp(17): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-     1>c:\users\karan\desktop\gitpulltrial\ksbengine(pc)\main.cpp(213): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IC:\Users\karan\Desktop\gitpulltrial\/dependencies/include /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt textures.cpp
+         textures.cpp
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\karan\Desktop\gitpulltrial\Debug\ksbengine(pc).exe" /INCREMENTAL /NOLOGO /LIBPATH:C:\Users\karan\Desktop\gitpulltrial\/dependencies/libs glfw3.lib opengl32.lib glew32s.lib FreeImage.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\karan\Desktop\gitpulltrial\Debug\ksbengine(pc).pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\karan\Desktop\gitpulltrial\Debug\ksbengine(pc).lib" /MACHINE:X86 Debug\filereader.obj
          Debug\main.obj
@@ -17,12 +15,9 @@
          Debug\vec2.obj
          Debug\vec3.obj
          Debug\windowmaker.obj
-     1>LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
-     1>LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
-     1>glew32s.lib(glew.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'glew32s.lib(glew.obj)' or at 'C:\Users\karan\Desktop\gitpulltrial\Debug\vc120.pdb'; linking object as if no debug info
          ksbengine(pc).vcxproj -> C:\Users\karan\Desktop\gitpulltrial\Debug\ksbengine(pc).exe
      1>Done Building Project "C:\Users\karan\Desktop\gitpulltrial\ksbengine(pc)\ksbengine(pc).vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:02.06
+Time Elapsed 00:00:03.01

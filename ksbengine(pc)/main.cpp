@@ -12,7 +12,7 @@
 using namespace ksbengine;
 using namespace coreengine;
 
-#define testing 1
+#define testing 0
 #define debug 1
 #if debug 1
 #define logit(x) std::cout<<x<<std::endl
@@ -34,8 +34,8 @@ int main(){
 	1 , -3, 10
 	};
 	renderer2d *therenderer=new renderer2d();
-	textures *thetexture=new textures("C:\\Users\\karan\\Desktop\\testimage.png");
-	textures *thetexture1 = new textures("C:\\Users\\karan\\Desktop\\imagetest.png");;
+	textures *thetexture=new textures("..\\textures png\\testimage.png");
+	textures *thetexture1 = new textures("..\\textures png\\imagetest.png");;
 	sprites2d *thesprite=new sprites2d(vertexarray,*thetexture);
 	therenderer->submit(*thesprite);
 
