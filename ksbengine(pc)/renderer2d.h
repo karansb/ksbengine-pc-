@@ -22,6 +22,9 @@ namespace ksbengine{namespace coreengine{
 		renderer2d();
 		void submit(sprites2d &thesprite);
 		void renderall();
+	public:
+		void createallbuffers();
+		void deleteallbuffers();
 	private:
 		void bindbuffer();
 		void unbindbuffer();

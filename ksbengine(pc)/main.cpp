@@ -12,7 +12,7 @@
 using namespace ksbengine;
 using namespace coreengine;
 
-#define testing 0
+#define testing 1
 #define debug 1
 #if debug 1
 #define logit(x) std::cout<<x<<std::endl
@@ -21,7 +21,8 @@ using namespace coreengine;
 #endif
 #if !testing
 
-
+//static sprites faster when renderer does not recreate buffer every frame
+//moving sprites need to submit vertex data every frame, which means buffer need to be deleted after drawing and recreated before submission
 
 int main(){
 	const int screenwidth = 640;
@@ -37,26 +38,52 @@ int main(){
 	textures *thetexture=new textures("..\\textures png\\testimage.png");
 	textures *thetexture1 = new textures("..\\textures png\\imagetest.png");;
 	sprites2d *thesprite=new sprites2d(vertexarray,*thetexture);
-	therenderer->submit(*thesprite);
 
-	vertexarray[2] += 5;
-	vertexarray[5] += 5;
-	vertexarray[8] += 5;
-	vertexarray[11] += 5;
+	GLfloat vertexarray1[] = {
+		1, -1, 10,
+		-1, -1, 10,
+		-1, -3, 10,
+		1, -3, 10
+	};
+	vertexarray1[2] += 5;
+	vertexarray1[5] += 5;
+	vertexarray1[8] += 5;
+	vertexarray1[11] += 5;
 
-	sprites2d *thesprite1 = new sprites2d(vertexarray,*thetexture1);
-	therenderer->submit(*thesprite1);
-	vertexarray[0] += 3;
-	vertexarray[3] += 3;
-	vertexarray[6] += 3;
-	vertexarray[9] += 3;
-	sprites2d *thesprite2 = new sprites2d(vertexarray,*thetexture1);
-	therenderer->submit(*thesprite2);
-	vertexarray[2] += 5;
-	vertexarray[5] += 5;
-	vertexarray[8] += 5;
-	vertexarray[11] += 5;
-	therenderer->submit(*thesprite);
+	sprites2d *thesprite1 = new sprites2d(vertexarray1, *thetexture1);
+	
+	GLfloat vertexarray2[] = {
+		1, -1, 10,
+		-1, -1, 10,
+		-1, -3, 10,
+		1, -3, 10
+	};
+	
+
+	vertexarray2[0] += 3;
+	vertexarray2[3] += 3;
+	vertexarray2[6] += 3;
+	vertexarray2[9] += 3;
+	sprites2d *thesprite2 = new sprites2d(vertexarray2, *thetexture1);
+	
+	GLfloat vertexarray3[] = {
+		1, -1, 10,
+		-1, -1, 10,
+		-1, -3, 10,
+		1, -3, 10
+	};
+	
+	vertexarray3[0] += 3;
+	vertexarray3[3] += 3;
+	vertexarray3[6] += 3;
+	vertexarray3[9] += 3;
+
+	vertexarray3[2] += 5;
+	vertexarray3[5] += 5;
+	vertexarray3[8] += 5;
+	vertexarray3[11] += 5;
+
+	sprites2d *thesprite3 = new sprites2d(vertexarray3);
 
 	//therenderer.submit(&thesprite);
 	/*renderer2d therenderer1;
@@ -126,6 +153,10 @@ int main(){
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indexarray),indexarray,GL_STATIC_DRAW);
 
 	*/
+		therenderer->submit(*thesprite);
+		therenderer->submit(*thesprite1);
+		therenderer->submit(*thesprite2);
+		therenderer->submit(*thesprite3);
 	
 
 	shader *myshader=new shader("vertextrial.vert", "fragmenttrial.frag");
@@ -137,7 +168,7 @@ int main(){
 	glUniform1iv(glGetUniformLocation(myshader->shaderid, "textures"),16,texidshader);
 
 	glUniformMatrix4fv(glGetUniformLocation(myshader->shaderid, "projmat"), 1, GL_TRUE, mat4::perspective(screenwidth / screenheight, 70, -1, 1000).mymatrix4x4);//mat4::orthographic(10, -10, 10, -10, 10, -10).mymatrix4x4);
-	
+
 	float newtime=0;
 	float oldtime = 0;
 	float timedelta = 0;
@@ -152,17 +183,31 @@ int main(){
 		newtime = glfwGetTime();
 		timedelta = newtime - oldtime;
 		timer += timedelta;
+		
 		if (timer>=1){
 			printf("fps: %d \n", framecount);
 			framecount = 0;
 			timer = 0;
 		}
 
+		//therenderer->createallbuffers();
+		//enable shader for this batch
+		//myshader->enableshader();
+		//end of enable shader for this batch
+		//transform all sprites
+	//	mat4::transformit(mat4::rotation(timedelta*50,vec3(0,0,1)),*thesprite3);
+		//end of transformation
+		//submit all sprites here
+		//end of all sprites submission
+		//enable sprite shader
+		//myshader->enableshader();
+		//glUniform1iv(glGetUniformLocation(myshader->shaderid, "textures"), 16, texidshader);
+		//glUniformMatrix4fv(glGetUniformLocation(myshader->shaderid, "projmat"), 1, GL_TRUE, mat4::perspective(screenwidth / screenheight, 70, -1, 1000).mymatrix4x4);//mat4::orthographic(10, -10, 10, -10, 10, -10).mymatrix4x4);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-		//logit(therenderer.spritecount);
+		//end of enable sprite shader
+		
 		therenderer->renderall();
+		//therenderer->deleteallbuffers();
 		glfwSwapBuffers(mywindow.mywindow);
 		glfwPollEvents();
 	}
@@ -219,19 +264,22 @@ int main(){
 			framecount = 0;
 		}
 		rotdel += deltatime*60;
-	glUniformMatrix4fv(glGetUniformLocation(theshader.shaderid, "rotation"), 1, GL_TRUE, mat4::rotation(rotdel,vec3(0,1,0)).mymatrix4x4);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		//glClearColor(1, 0,1 , 1);
 		//glColor3f(1,0,0);
 //glDrawElements(GL_TRIANGLES, theobj.vertexdataindex.size() / 3, GL_UNSIGNED_INT, 0);
 		//logit("fine here");
-		
+		glUniformMatrix4fv(glGetUniformLocation(theshader.shaderid, "rotation"), 1, GL_TRUE, mat4::rotation(0, vec3(0, 1, 0)).mymatrix4x4);
+
 		glUniformMatrix4fv(glGetUniformLocation(theshader.shaderid, "translation"), 1, GL_TRUE, mat4::translation(vec3(10, -10, 20)).mymatrix4x4);
 
 		theobj2.rendermodel();
+	glUniformMatrix4fv(glGetUniformLocation(theshader.shaderid, "rotation"), 1, GL_TRUE, mat4::rotation(rotdel,vec3(0,1,0)).mymatrix4x4);
 		glUniformMatrix4fv(glGetUniformLocation(theshader.shaderid, "translation"), 1, GL_TRUE, mat4::translation(vec3(-2, -10, 20)).mymatrix4x4);
 
 		theobj3.rendermodel();
+		glUniformMatrix4fv(glGetUniformLocation(theshader.shaderid, "rotation"), 1, GL_TRUE, mat4::rotation(rotdel, vec3(1,0 , 0)).mymatrix4x4);
+
 		glUniformMatrix4fv(glGetUniformLocation(theshader.shaderid, "translation"), 1, GL_TRUE, mat4::translation(vec3(-10, -10, 20)).mymatrix4x4);
 
 		theobj.rendermodel(); 

@@ -1,6 +1,9 @@
 #include "renderer2d.h"
 namespace ksbengine{namespace coreengine{
 	renderer2d::renderer2d(){
+		createallbuffers();
+	}
+	void renderer2d::createallbuffers(){
 		glGenBuffers(1, &vertexarraybuffer);
 		glBindBuffer(GL_ARRAY_BUFFER, vertexarraybuffer);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 3 * 4 * max_sprite,NULL,GL_DYNAMIC_DRAW);
@@ -18,6 +21,7 @@ namespace ksbengine{namespace coreengine{
 		glBindBuffer(GL_ARRAY_BUFFER,0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
 		//glBindBuffer(GL_ARRAY_BUFFER, 0);
+
 	}
 
 	void renderer2d::bindbuffer(){
@@ -64,7 +68,7 @@ namespace ksbengine{namespace coreengine{
 					texturecount++;
 				}
 				else{
-				std::cout << "in here" << std::endl;
+				//std::cout << "in here" << std::endl;
 					GLfloat texids[] = { indexoftexture, indexoftexture, indexoftexture, indexoftexture };
 					glBindBuffer(GL_ARRAY_BUFFER, texidbuffer);
 					glBufferSubData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 1 * 4 * spritecount, sizeof(texids), texids);
@@ -80,6 +84,8 @@ namespace ksbengine{namespace coreengine{
 			spritecount++;
 		}
 		unbindbuffer();
+		
+
 		
 		}
 	void renderer2d::renderall(){
@@ -102,12 +108,23 @@ namespace ksbengine{namespace coreengine{
 		glDrawElements(GL_TRIANGLES, 6*spritecount, GL_UNSIGNED_INT, 0);
 
 		unbindbuffer();
+		
+		
 	}
-	renderer2d::~renderer2d(){
+	void renderer2d::deleteallbuffers(){
+
 		glBindBuffer(GL_ARRAY_BUFFER,0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
 		glDeleteBuffers(1, &vertexarraybuffer);
 		glDeleteBuffers(1, &indexbuffer);
+		glDeleteBuffers(1,&texcoordbuffer);
+		glDeleteBuffers(1,&texidbuffer);
+
+		spritecount = 0;
+		texturecount = 0;
+	}
+	renderer2d::~renderer2d(){
+		deleteallbuffers();
 	}
 
 }}

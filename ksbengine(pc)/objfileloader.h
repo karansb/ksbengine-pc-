@@ -30,6 +30,6 @@ private:
 	void unbindbuffer();
 public:
 	void rendermodel();
-	inline ~objfileloader(){ delete[] vertices; delete[] normals; delete[] indices; delete[] texcoord; };
+	~objfileloader();
 };
 }}

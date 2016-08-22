@@ -10,7 +10,7 @@ namespace ksbengine{namespace coreengine{
 		const char *imgpath;
 	public:
 		GLuint textureid;
-		textures(const char*);
+		textures(const char *imagepath);
 		void bindtexture();
 		void unbindtexture();
 		~textures();

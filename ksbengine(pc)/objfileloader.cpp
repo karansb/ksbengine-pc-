@@ -155,6 +155,10 @@ namespace ksbengine{namespace coreengine{
 		vertexdataindex.clear();
 		
 		createbuffer();
+		delete[] vertices;
+		delete[] normals;
+		delete[] texcoord;
+		delete[] indices;
 		
 	}
 	void objfileloader::createbuffer(){
@@ -187,6 +191,12 @@ namespace ksbengine{namespace coreengine{
 		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, NULL, NULL);
 		glDrawElements(GL_TRIANGLES,vertexdataindexsize / 3, GL_UNSIGNED_INT, 0);
 		unbindbuffer();
+		
+	}
+	objfileloader::~objfileloader(){
+		glDeleteBuffers(1,&vertexbuffer);
+		glDeleteBuffers(1, &normalbuffer);
+		glDeleteBuffers(1, &indexbuffer);
 		
 	}
 }}
